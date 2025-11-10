@@ -4,12 +4,12 @@
 \alias{toy_lm}
 \title{Fit a simple linear regression model}
 \usage{
-toy_lm(X, y)
+toy_lm(formula, data)
 }
 \arguments{
-\item{X}{Numeric matrix or data frame of predictors}
+\item{formula}{A formula specifying the model (e.g., mpg ~ wt + hp + disp)}
 
-\item{y}{Numeric response vector}
+\item{data}{A data frame containing the variables in the model}
 }
 \value{
 A list containing coefficients, fitted values, and residuals
@@ -18,7 +18,8 @@ A list containing coefficients, fitted values, and residuals
 Fit a simple linear regression model
 }
 \examples{
-X <- cbind(1, 1:4)
-y <- c(2, 4, 5, 7)
-toy_lm(X, y)
+# Fit a simple model using mtcars dataset
+fit <- toy_lm(mpg ~ wt + hp + disp, data = mtcars)
+fit
+
 }

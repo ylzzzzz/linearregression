@@ -17,3 +17,7 @@ LazyData: true
 RoxygenNote: 7.3.3
 URL: https://github.com/ylzzzzz/linearregression
 BugReports: https://github.com/ylzzzzz/linearregression/issues
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

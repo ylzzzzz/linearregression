@@ -7,30 +7,35 @@
 
 #' Fit a simple linear regression model
 #'
-#' @param X Numeric matrix or data frame of predictors
-#' @param y Numeric response vector
+#' @param formula A formula specifying the model (e.g., mpg ~ wt + hp + disp)
+#' @param data A data frame containing the variables in the model
 #' @return A list containing coefficients, fitted values, and residuals
 #' @examples
-#' X <- cbind(1, 1:4)
-#' y <- c(2, 4, 5, 7)
-#' toy_lm(X, y)
+#' # Fit a simple model using mtcars dataset
+#' fit <- toy_lm(mpg ~ wt + hp + disp, data = mtcars)
+#' fit
+#'
 #' @export
-toy_lm <- function(X, y) {
-  # Check dimensions
-  if (nrow(X) != length(y))
-    stop("Number of rows in X must match length of y.")
+toy_lm <- function(formula, data) {
+  mf <- model.frame(formula, data)
+  X <- model.matrix(formula, mf)
+  y <- model.response(mf)
 
-  # Check for full rank
-  if (qr(X)$rank < ncol(X))
-    stop("Design matrix X is not full rank; (X'X) is not invertible.")
+  # Check numeric and invertibility
+  if (!is.numeric(y) || !is.matrix(X))
+    stop("Response must be numeric and predictors must form a numeric matrix.")
 
-  beta <- solve(t(X) %*% X) %*% t(X) %*% y
-  fitted <- X %*% beta
+  XtX <- t(X) %*% X
+  if (det(XtX) == 0)
+    stop("Matrix X'X is singular; predictors may be collinear.")
+
+  beta_hat <- solve(XtX) %*% t(X) %*% y
+  fitted <- X %*% beta_hat
   residuals <- y - fitted
+
   list(
-    coefficients = drop(beta),
-    fitted = drop(fitted),
-    residuals = drop(residuals)
+    coefficients = as.vector(beta_hat),
+    fitted = as.vector(fitted),
+    residuals = as.vector(residuals)
   )
 }
-
