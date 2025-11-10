@@ -4,6 +4,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/ylzzzzz/linearregression/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ylzzzzz/linearregression/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/ylzzzzz/linearregression/graph/badge.svg)](https://app.codecov.io/gh/ylzzzzz/linearregression)
 <!-- badges: end -->
 
 ## Overview
