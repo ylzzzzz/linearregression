@@ -7,6 +7,7 @@
 
 #' Fit a simple linear regression model
 #'
+#' @importFrom stats model.frame model.matrix model.response
 #' @param formula A formula specifying the model (e.g., mpg ~ wt + hp + disp)
 #' @param data A data frame containing the variables in the model
 #' @return A list containing coefficients, fitted values, and residuals
