@@ -26,15 +26,19 @@ toy_lm <- function(formula, data) {
     stop("Response must be numeric and predictors must form a numeric matrix.")
 
   XtX <- t(X) %*% X
-  if (det(XtX) == 0)
+  if (det(XtX) <= 0)
     stop("Matrix X'X is singular; predictors may be collinear.")
 
   beta_hat <- solve(XtX) %*% t(X) %*% y
   fitted <- X %*% beta_hat
   residuals <- y - fitted
 
+  # Add coefficient names
+  beta_hat <- drop(beta_hat)
+  names(beta_hat) <- colnames(X)
+
   list(
-    coefficients = as.vector(beta_hat),
+    coefficients = beta_hat,
     fitted = as.vector(fitted),
     residuals = as.vector(residuals)
   )

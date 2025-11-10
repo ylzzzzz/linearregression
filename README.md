@@ -1,6 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/ylzzzzz/linearregression/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ylzzzzz/linearregression/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 ## Overview
 
 **`linearregression`** is a simplified version of R’s built-in `lm()`

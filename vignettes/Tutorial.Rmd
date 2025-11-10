@@ -15,12 +15,12 @@ knitr::opts_chunk$set(
 library(linearregression)
 ```
 
-# Introduction
+## Introduction
 
 This vignette provides a step-by-step demonstration of how to use the `linearregression` package.  
 We’ll fit a multiple linear regression model using the classic `mtcars` dataset, interpret the output, and discuss potential corner cases such as collinearity.
 
-# Example: Fitting a Linear Model
+## Example: Fitting a Linear Model
 
 ```{r example}
 # Load dataset
@@ -33,7 +33,7 @@ fit_toy <- toy_lm(mpg ~ wt + hp + disp, data = mtcars)
 fit_toy
 ```
 
-# Comparing Results with R's Built-in `lm()`
+## Comparing Results with R's Built-in `lm()`
 
 To check that `toy_lm()` works correctly, we can compare its results with R’s built-in `lm()` function using the same predictors and dataset:
 
