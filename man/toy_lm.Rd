@@ -2,24 +2,31 @@
 % Please edit documentation in R/toy_lm.R
 \name{toy_lm}
 \alias{toy_lm}
-\title{Fit a simple linear regression model}
+\title{Fit a Linear Regression Model (Simplified lm)}
 \usage{
 toy_lm(formula, data)
 }
 \arguments{
-\item{formula}{A formula specifying the model (e.g., mpg ~ wt + hp + disp)}
+\item{formula}{A model formula (e.g., mpg ~ wt + hp)}
 
-\item{data}{A data frame containing the variables in the model}
+\item{data}{A data frame containing the variables in the formula}
 }
 \value{
-A list containing coefficients, fitted values, and residuals
+A list containing:
+\item{coefficients}{Coefficient table with SE, t, p}
+\item{fitted}{Fitted values}
+\item{residuals}{Residuals}
+\item{r.squared}{R-squared}
+\item{adj.r.squared}{Adjusted R-squared}
+\item{mse}{Mean squared error}
+\item{residual.se}{Residual standard error}
 }
 \description{
-Fit a simple linear regression model
+A simplified implementation of linear regression using the normal equations.
+Returns coefficient table, fitted values, residuals.
 }
 \examples{
-# Fit a simple model using mtcars dataset
 fit <- toy_lm(mpg ~ wt + hp + disp, data = mtcars)
-fit
+fit$coefficients
 
 }
