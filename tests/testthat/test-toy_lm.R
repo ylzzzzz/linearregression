@@ -49,17 +49,17 @@ test_that("toy_lm errors when response y is not numeric", {
   )
 })
 
-test_that("toy_lm errors when X is not a matrix", {
-
-  local_stub(model.matrix, function(formula, data) {
-    return(as.data.frame(data))   # return NON-matrix
-  })
+test_that("toy_lm errors when predictor matrix X is not numeric", {
+  dat <- mtcars
+  # Make 'wt' a non-numeric class that model.matrix cannot handle properly
+  dat$wt <- factor(dat$wt)
 
   expect_error(
-    toy_lm(mpg ~ wt + hp, data = mtcars),
+    toy_lm(mpg ~ wt + hp, data = dat),
     "Predictor matrix X is not numeric"
   )
 })
+
 
 
 
