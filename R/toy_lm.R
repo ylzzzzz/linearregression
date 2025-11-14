@@ -37,8 +37,11 @@ toy_lm <- function(formula, data) {
   y <- model.response(mf)
 
   # inputs data type
-  if (!is.numeric(y)) stop("Response variable must be numeric.")
-  if (!is.matrix(X)) stop("Predictor matrix X is not numeric.") # change this to input be numeric, not matrix
+  pred_vars <- all.vars(formula)[-1]
+  if (!all(sapply(data[pred_vars], is.numeric))) {
+    stop("Predictor variables must be numeric.")
+  }
+
 
   XtX <- t(X) %*% X
   if (det(XtX) <= .Machine$double.eps)

@@ -36,16 +36,15 @@ test_that("toy_lm errors when response y is not numeric", {
   expect_error(toy_lm(mpg ~ wt + hp, data = dat), "numeric")
 })
 
-# error appeared after adding this
-# test_that("toy_lm errors when predictor matrix X is not numeric", {
-#   dat <- mtcars
-#   dat$wt <- factor(dat$wt) # make wt non-numeric
-#
-#   expect_error(
-#     toy_lm(mpg ~ wt + hp, data = dat),
-#     "Predictor matrix X is not numeric"
-#   )
-# })
+test_that("toy_lm errors when predictors are not numeric", {
+  dat <- mtcars
+  dat$wt <- as.character(dat$wt)  # intentionally not numeric
+
+  expect_error(
+    toy_lm(mpg ~ wt + hp, data = dat), "numeric"
+  )
+})
+
 
 
 
