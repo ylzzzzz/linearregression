@@ -39,7 +39,7 @@ test_that("toy_lm detects singular (collinear) design matrix", {
   )
 })
 
-test_that("toy_lm errors when response is not numeric", {
+test_that("toy_lm errors when response y is not numeric", {
   dat <- mtcars
   dat$mpg <- as.character(dat$mpg)
 
@@ -48,6 +48,19 @@ test_that("toy_lm errors when response is not numeric", {
     "numeric"
   )
 })
+
+test_that("toy_lm errors when X is not a matrix", {
+
+  local_stub(model.matrix, function(formula, data) {
+    return(as.data.frame(data))   # return NON-matrix
+  })
+
+  expect_error(
+    toy_lm(mpg ~ wt + hp, data = mtcars),
+    "Predictor matrix X is not numeric"
+  )
+})
+
 
 
 
