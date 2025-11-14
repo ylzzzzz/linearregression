@@ -31,50 +31,37 @@
 #' @export
 toy_lm <- function(formula, data) {
 
-  # -------------------------
-  # Build model frame
-  # -------------------------
+  # model frame
   mf <- model.frame(formula, data)
   X <- model.matrix(formula, mf)
   y <- model.response(mf)
 
-  # -------------------------
-  # Validate inputs
-  # -------------------------
+  # inputs data type
   if (!is.numeric(y)) stop("Response variable must be numeric.")
-  if (!is.matrix(X)) stop("Predictor matrix X is not numeric.")
+  if (!is.matrix(X)) stop("Predictor matrix X is not numeric.") # change this to input be numeric, not matrix
 
   XtX <- t(X) %*% X
   if (det(XtX) <= .Machine$double.eps)
-    stop("Matrix X'X is singular or nearly singular.")
+    stop("Matrix X'X is singular.")
 
-  # -------------------------
-  # Fit model
-  # -------------------------
+  # compute beta hat
   beta_hat <- solve(XtX) %*% t(X) %*% y
   fitted <- X %*% beta_hat
   residuals <- y - fitted
 
-  # -------------------------
-  # Diagnostics
-  # -------------------------
+  # statistics
   n <- length(y)
   p <- ncol(X)
-
   sse <- sum(residuals^2)
   mse <- sse / (n - p)
   residual_se <- sqrt(mse)
-
   sst <- sum((y - mean(y))^2)
   r2 <- 1 - sse/sst
   adj_r2 <- 1 - (1 - r2) * (n - 1) / (n - p)
 
-  # -------------------------
-  # Coefficient table
-  # -------------------------
+  # coefficient table
   XtX_inv <- solve(XtX)
   se <- sqrt(diag(mse * XtX_inv))
-
   beta_hat <- drop(beta_hat)
   names(beta_hat) <- colnames(X)
 
@@ -88,9 +75,7 @@ toy_lm <- function(formula, data) {
     p.value = pvals
   )
 
-  # -------------------------
-  # Output object
-  # -------------------------
+  # output
   res <- list(
     coefficients = coef_table,
     fitted = as.vector(fitted),
