@@ -20,6 +20,7 @@ BugReports: https://github.com/ylzzzzz/linearregression/issues
 Suggests: 
     knitr,
     rmarkdown,
+    bench,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Config/testthat/edition: 3

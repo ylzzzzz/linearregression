@@ -18,29 +18,67 @@ library(linearregression)
 ## Introduction
 
 This vignette provides a step-by-step demonstration of how to use the `linearregression` package.  
-We’ll fit a multiple linear regression model using the classic `mtcars` dataset, interpret the output, and discuss potential corner cases such as collinearity.
+We’ll fit a multiple linear regression model using the classic `mtcars` dataset, interpret the output, and discussion.
 
-## Example: Fitting a Linear Model
+Example 1: Fitting a Linear Model on `mtcars`
 
-```{r example}
-# Load dataset
+```{r}
 data(mtcars)
 
-# Fit model using toy_lm() 
+# fit model using toy_lm() 
 fit_toy <- toy_lm(mpg ~ wt + hp + disp, data = mtcars)
 
-# Display results
-fit_toy
+# results
+fit_toy$coefficients
+```
+
+## Comparing `toy_lm()` Results with R's Built-in `lm()`
+
+To check that `toy_lm()` works correctly, we can compare its results with R’s built-in `lm()` function using the same predictors and dataset:
+
+```{r}
+# fit model using lm
+fit_lm <- lm(mpg ~ wt + hp + disp, data = mtcars)
+
+# results of lm
+summary(fit_lm)
+
+# compare coefficients 
+all.equal(fit_toy$coefficients[, "Estimate"], coef(fit_lm))
+```
+
+## Example 2: Using `toy_lm()` on Simulated Data
+```{r}
+set.seed(123)
+n <- 200
+x1 <- rnorm(n)
+x2 <- rnorm(n)
+y <- 5 + 3*x1 - 2*x2 + rnorm(n, sd = 1)
+
+simdata <- data.frame(y, x1, x2)
+
+toy_sim <- toy_lm(y ~ x1 + x2, data = simdata)
+toy_sim$coefficients
+
 ```
 
 ## Comparing Results with R's Built-in `lm()`
 
-To check that `toy_lm()` works correctly, we can compare its results with R’s built-in `lm()` function using the same predictors and dataset:
+```{r}
+lm_sim <- lm(y ~ x1 + x2, data = simdata)
+summary(lm_sim)
+# compare coefficients 
+all.equal(toy_sim$coefficients[, "Estimate"], coef(lm_sim))
+```
 
-```{r compare_lm}
-# Fit model using lm
-fit_lm <- lm(mpg ~ wt + hp + disp, data = mtcars)
+## Benchmark on speed
 
-# Display results of lm
-summary(fit_lm)
+`toy_lm()` has larger itr/sec than `lm()` because it is designed as a simplified linear regression function. It only accepts numeric predictors and uses the normal equations to compute coefficients, avoiding the more general and computationally heavier techniques used by lm().
+```{r}
+bench::mark(
+  toy_lm(y ~ x1 + x2, data = simdata),
+  lm(y ~ x1 + x2, data = simdata),
+  iterations = 50,
+  check = FALSE 
+)
 ```
