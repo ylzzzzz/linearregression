@@ -11,18 +11,29 @@
 #' Returns coefficient table, fitted values, residuals.
 #'
 #' @importFrom stats model.frame model.matrix model.response pt
+#' @importFrom stats model.frame model.matrix model.response pt pf
 #'
 #' @param formula A model formula (e.g., mpg ~ wt + hp)
 #' @param data A data frame containing the variables in the formula
 #'
 #' @return A list containing:
+#' \item{call}{The matched function call}
 #' \item{coefficients}{Coefficient table with SE, t, p}
 #' \item{fitted}{Fitted values}
 #' \item{residuals}{Residuals}
+#'
+#' \item{residual.se}{Residual standard error}
+#' \item{mse}{Mean squared error}
 #' \item{r.squared}{R-squared}
 #' \item{adj.r.squared}{Adjusted R-squared}
-#' \item{mse}{Mean squared error}
-#' \item{residual.se}{Residual standard error}
+#'
+#' \item{f.statistic}{F-statistic testing overall model significance}
+#' \item{f.df}{Numerator and denominator degrees of freedom for the F-test}
+#' \item{f.pvalue}{P-value for the F-test}
+#'
+#' \item{X}{Model matrix}
+#' \item{y}{Response vector}
+
 #'
 #' @examples
 #' fit <- toy_lm(mpg ~ wt + hp + disp, data = mtcars)
@@ -68,6 +79,7 @@ toy_lm <- function(formula, data) {
   beta_hat <- drop(beta_hat)
   names(beta_hat) <- colnames(X)
 
+  # t-test
   tvals <- beta_hat / se
   pvals <- 2 * pt(abs(tvals), df = n - p, lower.tail = FALSE)
 
@@ -78,18 +90,31 @@ toy_lm <- function(formula, data) {
     p.value = pvals
   )
 
+  # F-test
+  msr <- (sst - sse) / (p - 1)
+  fstat <- msr / mse          # F statistic
+  df1 <- p - 1    # numerator df
+  df2 <- n - p    # denominator df
+  f_pvalue <- pf(fstat, df1, df2, lower.tail = FALSE)
+
   # output
   res <- list(
+    call = match.call(),
     coefficients = coef_table,
     fitted = as.vector(fitted),
     residuals = as.vector(residuals),
+
     residual.se = residual_se,
     mse = mse,
     r.squared = r2,
     adj.r.squared = adj_r2,
+
+    f.statistic = fstat,
+    f.df = c(df1, df2),
+    f.pvalue = f_pvalue,
+
     X = X,
-    y = y,
-    call = match.call()
+    y = y
   )
 
   class(res) <- "toy_lm"

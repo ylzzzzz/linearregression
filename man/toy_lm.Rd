@@ -13,13 +13,22 @@ toy_lm(formula, data)
 }
 \value{
 A list containing:
+\item{call}{The matched function call}
 \item{coefficients}{Coefficient table with SE, t, p}
 \item{fitted}{Fitted values}
 \item{residuals}{Residuals}
+
+\item{residual.se}{Residual standard error}
+\item{mse}{Mean squared error}
 \item{r.squared}{R-squared}
 \item{adj.r.squared}{Adjusted R-squared}
-\item{mse}{Mean squared error}
-\item{residual.se}{Residual standard error}
+
+\item{f.statistic}{F-statistic testing overall model significance}
+\item{f.df}{Numerator and denominator degrees of freedom for the F-test}
+\item{f.pvalue}{P-value for the F-test}
+
+\item{X}{Model matrix}
+\item{y}{Response vector}
 }
 \description{
 A simplified implementation of linear regression using the normal equations.

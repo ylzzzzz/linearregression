@@ -13,6 +13,11 @@ test_that("toy_lm runs", {
   expect_true(is.numeric(fit$adj.r.squared))
   expect_true(is.numeric(fit$mse))
   expect_true(is.numeric(fit$residual.se))
+
+  expect_true(is.numeric(fit$f.statistic))
+  expect_true(is.numeric(fit$f.pvalue))
+  expect_true(length(fit$f.df) == 2)
+  expect_true(all(fit$f.df > 0))
 })
 
 test_that("toy_lm coefficients are close to lm() results", {
