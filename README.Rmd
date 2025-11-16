@@ -60,7 +60,7 @@ fit$f.statistic      # F-statistic for overall significance
 fit$f.pvalue         # p-value for the F-test
 ```
 
-More detailed tutorial can be found in the vignettes.
+More detailed tutorials can be found in the vignettes.
 
 ## Getting help
 
