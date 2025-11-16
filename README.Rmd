@@ -22,12 +22,18 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-**`linearregression`** is a simplified version of R’s built-in `lm()` function.  
-It provides an implementation of ordinary least squares (OLS) using basic matrix operations.
 
-- **`toy_lm()`** takes in a design matrix `X` (predictors) and a response vector `y`,  
-  fits a linear model using the ordinary least squares method,  
-  and returns the estimated coefficients, fitted values, and residuals.
+`linearregression` provides a toy implementation of
+ordinary least squares (OLS) using the normal equations.
+
+- `toy_lm()` accepts a model formula and a data frame, checks that all predictors are numeric, fits the OLS model using  
+  \[
+  \hat{\beta} = (X^\top X)^{-1} X^\top y,
+  \]
+  and returns a full coefficient table (estimates, standard errors, t‐statistics, and p‐values).
+
+- Additional statistics returned include fitted values, residuals, mean squared error (MSE),
+  residual standard error (RSE), R², adjusted R², and the overall F‐test (statistic, degrees of freedom, and p‐value).
 
 
 ## Installation
@@ -44,7 +50,18 @@ pak::pak("ylzzzzz/linearregression")
 
 ```{r, message = FALSE}
 library(linearregression)
-## code
+
+# Fit a model
+fit <- toy_lm(mpg ~ wt + hp + disp, data = mtcars)
+
+# View the coefficient table
+fit$coefficients
+
+# Additional model statistics
+fit$r.squared        # R-squared
+fit$adj.r.squared    # Adjusted R-squared
+fit$f.statistic      # F-statistic for overall significance
+fit$f.pvalue         # p-value for the F-test
 ```
 
 ## Getting help

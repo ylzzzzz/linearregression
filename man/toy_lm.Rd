@@ -31,8 +31,13 @@ A list containing:
 \item{y}{Response vector}
 }
 \description{
-A simplified implementation of linear regression using the normal equations.
-Returns coefficient table, fitted values, residuals.
+A simplified linear regression implementation using the normal equations.
+}
+\details{
+Fits a multiple linear regression model using ordinary least squares,
+assuming all predictor variables are numeric. The function computes
+coefficient estimates, standard errors, t-tests, fitted values,
+residuals, model diagnostics, and an overall F-test.
 }
 \examples{
 fit <- toy_lm(mpg ~ wt + hp + disp, data = mtcars)

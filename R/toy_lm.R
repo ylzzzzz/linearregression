@@ -7,8 +7,12 @@
 
 #' Fit a Linear Regression Model (Simplified lm)
 #'
-#' A simplified implementation of linear regression using the normal equations.
-#' Returns coefficient table, fitted values, residuals.
+#' A simplified linear regression implementation using the normal equations.
+#'
+#' Fits a multiple linear regression model using ordinary least squares,
+#' assuming all predictor variables are numeric. The function computes
+#' coefficient estimates, standard errors, t-tests, fitted values,
+#' residuals, model diagnostics, and an overall F-test.
 #'
 #' @importFrom stats model.frame model.matrix model.response pt
 #' @importFrom stats model.frame model.matrix model.response pt pf

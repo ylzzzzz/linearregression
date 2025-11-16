@@ -10,15 +10,19 @@ coverage](https://codecov.io/gh/ylzzzzz/linearregression/graph/badge.svg)](https
 
 ## Overview
 
-**`linearregression`** is a simplified version of R’s built-in `lm()`
-function.  
-It provides an implementation of ordinary least squares (OLS) using
-basic matrix operations.
+`linearregression` provides a toy implementation of ordinary least
+squares (OLS) using the normal equations.
 
-- **`toy_lm()`** takes in a design matrix `X` (predictors) and a
-  response vector `y`,  
-  fits a linear model using the ordinary least squares method,  
-  and returns the estimated coefficients, fitted values, and residuals.
+- `toy_lm()` accepts a model formula and a data frame, checks that all
+  predictors are numeric, fits the OLS model using  
+  $$
+  \hat{\beta} = (X^\top X)^{-1} X^\top y,
+  $$ and returns a full coefficient table (estimates, standard errors,
+  t‐statistics, and p‐values).
+
+- Additional statistics returned include fitted values, residuals, mean
+  squared error (MSE), residual standard error (RSE), R², adjusted R²,
+  and the overall F‐test (statistic, degrees of freedom, and p‐value).
 
 ## Installation
 
@@ -34,7 +38,27 @@ pak::pak("ylzzzzz/linearregression")
 
 ``` r
 library(linearregression)
-## code
+
+# Fit a model
+fit <- toy_lm(mpg ~ wt + hp + disp, data = mtcars)
+
+# View the coefficient table
+fit$coefficients
+#>                  Estimate  Std.Error     t.value      p.value
+#> (Intercept) 37.1055052690 2.11081525 17.57875558 1.161936e-16
+#> wt          -3.8008905826 1.06619064 -3.56492586 1.330991e-03
+#> hp          -0.0311565508 0.01143579 -2.72447633 1.097103e-02
+#> disp        -0.0009370091 0.01034974 -0.09053451 9.285070e-01
+
+# Additional model statistics
+fit$r.squared        # R-squared
+#> [1] 0.8268361
+fit$adj.r.squared    # Adjusted R-squared
+#> [1] 0.8082829
+fit$f.statistic      # F-statistic for overall significance
+#> [1] 44.56552
+fit$f.pvalue         # p-value for the F-test
+#> [1] 8.649588e-11
 ```
 
 ## Getting help
