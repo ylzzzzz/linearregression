@@ -17,24 +17,66 @@ library(linearregression)
 
 ## Introduction
 
-This vignette provides a step-by-step demonstration of how to use the `linearregression` package.  
-We’ll fit a multiple linear regression model using the classic `mtcars` dataset, interpret the output, and discussion.
+This vignette provides a step-by-step demonstration of how to use the `toy_lm()` function in the `linearregression` package.  
+
+
+We will fit a multiple linear regression model using the `mtcars` dataset, interpret the output, compare the results with R’s built-in `lm()` function, and briefly benchmark the computational speed of `toy_lm()` against `lm()`.
+
 
 ## Example 1: Fitting a Linear Model on `mtcars`
 
+
+The built-in `mtcars` dataset comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles.
+
+
+In this example, we fit a model to study how miles per gallon (`mpg`) is associated with:
+
+- `wt`: weight (1000 lbs) 
+- `hp`: gross horsepower  
+- `disp`: displacement (cu.in.)
 ```{r}
 data(mtcars)
 
 # fit model using toy_lm() 
 fit_toy <- toy_lm(mpg ~ wt + hp + disp, data = mtcars)
+```
 
+## Output Interpretation 
+
+Interpreting associations of each predictor with the response: 
+
+- The `Estimate` gives the expected change in the response for a one-unit increase in the predictor, holding other variables constant.
+- The `Std.Error` measures uncertainty in the estimate.
+- The `t.value` and `p.value` test the null hypothesis that the coefficient is zero (no association).
+
+
+For example, to interpret the association between `wt` and `mpg` after adjusting for `hp` and `disp`:
+
+- We observe from model output that the estimated coefficient for `wt` is approximately –3.80, meaning that for every 1,000 lb increase in vehicle weight, the model predicts a decrease of about 3.8 miles per gallon (mpg), holding hp and disp constant.
+- The associated p-value (p = 0.0013) indicates this effect is statistically significant
+(p < 0.01), suggesting a strong negative association between weight and fuel efficiency.
+```{r}
 # results
 fit_toy$coefficients
 ```
 
+Interpreting the F-Test:
+
+The F-test evaluates the overall significance of the regression model. It tests whether all slope coefficients are simultaneously equal to zero.
+
+In this example, the F-test p-value is 8.65 × 10⁻¹¹, which is below 0.01.  
+This indicates that the predictors `wt`, `hp`, and `disp` together,  
+significantly improve the prediction of `mpg` compared with an intercept-only model.
+```{r}
+fit_toy$f.statistic
+fit_toy$f.df
+fit_toy$f.pvalue
+```
+
 ## Comparing `toy_lm()` Results with R's Built-in `lm()`
 
-To check that `toy_lm()` works correctly, we can compare its results with R’s built-in `lm()` function using the same predictors and dataset:
+To check that `toy_lm()` works correctly, we can compare its results with R’s built-in `lm()` function using the same predictors and dataset: (We compare only the coefficient estimates here.  
+More detailed correctness checks of other statistics are performed in the package’s tests section.)
 
 ```{r}
 # fit model using lm
@@ -71,7 +113,7 @@ summary(lm_sim)
 all.equal(toy_sim$coefficients[, "Estimate"], coef(lm_sim))
 ```
 
-## Benchmark on speed
+## Benchmark on Speed
 
 `toy_lm()` has similar speed as `lm()` because it is designed as a simplified linear regression function. It only accepts numeric predictors and uses the normal equations to compute coefficients.
 ```{r}
@@ -82,3 +124,31 @@ bench::mark(
   check = FALSE 
 )
 ```
+
+## How `toy_lm()` Works Behind the Scenes
+
+When you run a command such as:
+
+```{r}
+fit <- toy_lm(mpg ~ wt + hp + disp, data = mtcars)
+```
+
+The function performs several steps internally:
+
+- Extracts the response `y`
+  - The left-hand side of the formula (`mpg`) becomes the numeric response vector.
+
+- Extracts the predictor variables
+  - The right-hand side (`wt`, `hp`, `disp`) becomes the set of predictor variables.
+
+- Constructs the model matrix `X`
+  - The first column is all 1’s, corresponding to the intercept.
+  - Each subsequent column corresponds to a predictor (`wt`, `hp`, `disp`).
+
+- Computes the OLS estimator
+  - The coefficients are obtained using the closed-form normal equation:
+  
+    $$
+    \hat{\beta} = (X^\top X)^{-1} X^\top y.
+    $$
+

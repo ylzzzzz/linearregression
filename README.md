@@ -59,6 +59,8 @@ fit$f.pvalue         # p-value for the F-test
 #> [1] 8.649588e-11
 ```
 
+More detailed tutorials can be found in the vignettes.
+
 ## Getting help
 
 If you encounter a bug or have suggestions for improvement, please open
