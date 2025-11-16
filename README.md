@@ -14,10 +14,8 @@ coverage](https://codecov.io/gh/ylzzzzz/linearregression/graph/badge.svg)](https
 squares (OLS) using the normal equations.
 
 - `toy_lm()` accepts a model formula and a data frame, checks that all
-  predictors are numeric, fits the OLS model using  
-  $$
-  \hat{\beta} = (X^\top X)^{-1} X^\top y,
-  $$ and returns a full coefficient table (estimates, standard errors,
+  predictors are numeric, fits the OLS model using `β̂ = (XᵀX)⁻¹ Xᵀy`and
+  returns a full coefficient table (estimates, standard errors,
   t‐statistics, and p‐values).
 
 - Additional statistics returned include fitted values, residuals, mean
