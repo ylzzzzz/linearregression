@@ -28,8 +28,11 @@ You can install the development version of linearregression from GitHub
 with:
 
 ``` r
-# install.packages("pak")
-pak::pak("ylzzzzz/linearregression")
+remotes::install_github(
+  "ylzzzzz/linearregression",
+  build_vignettes = TRUE,
+  dependencies = TRUE
+)
 ```
 
 ## Usage:

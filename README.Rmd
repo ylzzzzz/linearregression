@@ -37,8 +37,11 @@ ordinary least squares (OLS) using the normal equations.
 You can install the development version of linearregression from GitHub with:
 
 ```{r, eval = FALSE}
-# install.packages("pak")
-pak::pak("ylzzzzz/linearregression")
+remotes::install_github(
+  "ylzzzzz/linearregression",
+  build_vignettes = TRUE,
+  dependencies = TRUE
+)
 ```
 
 ## Usage: 
