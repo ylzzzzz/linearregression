@@ -63,6 +63,10 @@ fit$f.pvalue         # p-value for the F-test
 
 More detailed tutorials can be found in the vignettes.
 
+``` r
+browseVignettes("linearregression")
+```
+
 ## Getting help
 
 If you encounter a bug or have suggestions for improvement, please open

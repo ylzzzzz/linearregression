@@ -37,11 +37,30 @@
 #'
 #' \item{X}{Model matrix}
 #' \item{y}{Response vector}
-
 #'
 #' @examples
+#' # Example 1: Fit a model on mtcars
 #' fit <- toy_lm(mpg ~ wt + hp + disp, data = mtcars)
 #' fit$coefficients
+#' fit$r.squared
+#' fit$adj.r.squared
+#' fit$f.statistic
+#' fit$f.df
+#' fit$f.pvalue
+#'
+#' # Example 2: Simulated data
+#' set.seed(123)
+#' n <- 200
+#' x1 <- rnorm(n)
+#' x2 <- rnorm(n)
+#' y  <- 5 + 3*x1 - 2*x2 + rnorm(n, sd = 1)
+#'
+#' simdata <- data.frame(y, x1, x2)
+#'
+#' toy_sim <- toy_lm(y ~ x1 + x2, data = simdata)
+#' toy_sim$coefficients
+#' toy_sim$r.squared
+#' toy_sim$adj.r.squared
 #'
 #' @export
 toy_lm <- function(formula, data) {
